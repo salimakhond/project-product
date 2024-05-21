@@ -53,9 +53,31 @@ const getSpecificProduct = async (req: Request, res: Response) => {
     });
   }
 };
+const SpecificProductUpdate = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const updatesProduct = req.body.product;
+    const result = await ProductServices.SpecificProductUpdateFromDB(
+      productId,
+      updatesProduct,
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Products update successfully!',
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
+  }
+};
 
 export const ProductController = {
   createANewProduct,
   getAllProduct,
   getSpecificProduct,
+  SpecificProductUpdate,
 };
