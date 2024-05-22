@@ -20,6 +20,57 @@ const createANewOrder = async (req: Request, res: Response) => {
   }
 };
 
+// Get All Order List or Search By Mail
+const getAllOrderOrSearchByMailOrder = async (req: Request, res: Response) => {
+  try {
+    const email = req.query.email as string | undefined;
+
+    if (email === '') {
+      return res.status(400).json({
+        success: false,
+        message: `Search box empty: ${email}`,
+      });
+    }
+    const result =
+      await OrderServices.getAllOrderOrSearchByMailOrderFromDB(email);
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: `No orders found for email: ${email}`,
+      });
+    }
+
+    if (email) {
+      return res.status(200).json({
+        success: true,
+        message: `Orders fetched successfully for user email!`,
+        data: result,
+      });
+    } else {
+      if (Array.isArray(result) && result.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'No orders found',
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'All orders fetched successfully!',
+        data: result,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
+  }
+};
+
 export const OrderController = {
   createANewOrder,
+  getAllOrderOrSearchByMailOrder,
 };

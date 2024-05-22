@@ -7,6 +7,16 @@ const createOrderIntoDB = async (order: TOrder) => {
   return result;
 };
 
+// Get All Order List or Search By Mail Order
+const getAllOrderOrSearchByMailOrderFromDB = async (email?: string) => {
+  if (email) {
+    return await Order.findOne({ email });
+  } else {
+    return await Order.find();
+  }
+};
+
 export const OrderServices = {
   createOrderIntoDB,
+  getAllOrderOrSearchByMailOrderFromDB,
 };
