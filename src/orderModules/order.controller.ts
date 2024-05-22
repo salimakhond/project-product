@@ -23,17 +23,20 @@ const createANewOrder = async (req: Request, res: Response) => {
 // Get All Order List or Search By Mail
 const getAllOrderOrSearchByMailOrder = async (req: Request, res: Response) => {
   try {
-    const email = req.query.email as string | undefined;
+    const email = req.query.email as string;
 
+    // Checking search field empty
     if (email === '') {
       return res.status(400).json({
         success: false,
-        message: `Search box empty: ${email}`,
+        message: `Search field empty`,
       });
     }
+
     const result =
       await OrderServices.getAllOrderOrSearchByMailOrderFromDB(email);
 
+    // Checked results not matching
     if (!result) {
       return res.status(404).json({
         success: false,
@@ -48,16 +51,17 @@ const getAllOrderOrSearchByMailOrder = async (req: Request, res: Response) => {
         data: result,
       });
     } else {
+      // Checked no mail available
       if (Array.isArray(result) && result.length === 0) {
         return res.status(404).json({
           success: false,
-          message: 'No orders found',
+          message: 'Order not found',
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'All orders fetched successfully!',
+        message: 'Orders fetched successfully!',
         data: result,
       });
     }

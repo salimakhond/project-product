@@ -11,6 +11,7 @@ const createProductIntoDB = async (product: TProduct) => {
 const getAllProductOrSearchProductFromDB = async (searchTerm: string) => {
   if (searchTerm) {
     return await Product.find({
+      // search field matching name,description,category and tag
       $or: [
         { name: { $regex: searchTerm, $options: 'i' } },
         { description: { $regex: searchTerm, $options: 'i' } },

@@ -9,9 +9,10 @@ app.use(express.json());
 app.use(cors());
 
 // application route
-app.use('/api', ProductRouters);
-app.use('/api', OrderRouters);
+app.use('/api', ProductRouters); //product route
+app.use('/api', OrderRouters); //order route
 
+// not found route error
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({
     success: false,
