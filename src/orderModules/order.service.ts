@@ -1,9 +1,22 @@
+import { Product } from '../productModules/product.model';
 import { TOrder } from './order.interface';
 import { Order } from './order.model';
 
 // Create a New Order
 const createOrderIntoDB = async (order: TOrder) => {
   const result = await Order.create(order);
+
+  const product = await Product.findOne({ _id: order.productId });
+
+  if (!product) {
+    throw Error('Product not found');
+  }
+
+  const availableQuantity = product.inventory.quantity;
+  if (order.quantity > availableQuantity) {
+    throw Error('Insufficient quantity');
+  }
+
   return result;
 };
 
