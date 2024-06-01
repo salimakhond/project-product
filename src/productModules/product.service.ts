@@ -31,7 +31,7 @@ const getSpecificProductFromDB = async (_id: string) => {
 };
 
 // Update Product Information
-const SpecificProductUpdateFromDB = async (_id: string, updates: any) => {
+const SpecificProductUpdateFromDB = async (_id: string, updates: TProduct) => {
   const result = await Product.findOneAndUpdate({ _id }, updates, {
     new: true,
     runValidators: true,

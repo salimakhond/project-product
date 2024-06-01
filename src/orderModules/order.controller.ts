@@ -5,10 +5,10 @@ import orderValidationSchema from './order.zod.validation';
 // Create a New Order
 const createANewOrder = async (req: Request, res: Response) => {
   try {
-    const { order: orderData } = req.body;
+    const order = req.body;
 
     // data validate with zod
-    const zodParseData = orderValidationSchema.parse(orderData);
+    const zodParseData = orderValidationSchema.parse(order);
 
     const result = await OrderServices.createOrderIntoDB(zodParseData);
     res.status(200).json({
@@ -16,11 +16,11 @@ const createANewOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully!',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err,
+      error: err.message,
     });
   }
 };

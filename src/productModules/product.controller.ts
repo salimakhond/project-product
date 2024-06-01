@@ -5,10 +5,10 @@ import productValidationSchema from './product.zod.validation';
 // Create a New Product
 const createANewProduct = async (req: Request, res: Response) => {
   try {
-    const { product: productData } = req.body;
+    const product = req.body;
 
     // data validate with zod
-    const zodParseData = productValidationSchema.parse(productData);
+    const zodParseData = productValidationSchema.parse(product);
 
     const result = await ProductServices.createProductIntoDB(zodParseData);
     res.status(200).json({
@@ -143,7 +143,7 @@ const deleteSpecificProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Product deleted successfully!',
-      data: null,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({

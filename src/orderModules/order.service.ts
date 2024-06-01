@@ -9,12 +9,13 @@ const createOrderIntoDB = async (order: TOrder) => {
   const product = await Product.findOne({ _id: order.productId });
 
   if (!product) {
-    throw Error('Product not found');
+    throw new Error('Product not found');
   }
 
   const availableQuantity = product.inventory.quantity;
+
   if (order.quantity > availableQuantity) {
-    throw Error('Insufficient quantity');
+    throw new Error('Insufficient quantity');
   }
 
   return result;

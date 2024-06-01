@@ -12,16 +12,17 @@ app.use(cors());
 app.use('/api', ProductRouters); //product route
 app.use('/api', OrderRouters); //order route
 
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello World!');
+});
+
 // not found route error
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
   });
-});
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  next();
 });
 
 export default app;
